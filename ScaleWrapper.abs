@@ -1,0 +1,45 @@
+module ScaleWrapper;
+
+export *;
+
+import * from CancelBookingDeployment;
+import * from GetRewardMilesDeployment;
+import * from BookFlightsDeployment;
+import * from UpdateMilesDeployment;
+import * from QueryFlightsDeployment;
+import * from ViewProfileDeployment;
+import * from UpdateProfileDeployment;
+import * from AuthDeployment;
+import * from ValidateIdDeployment;
+
+interface WrapperInterface {
+    Unit deploy();
+    Unit undeploy();
+}
+
+class Wrapper(CancelBookingDeployment cancD, GetRewardMilesDeployment getRewardD, BookFlightsDeployment bookflightD, UpdateMilesDeployment updatemilesD, QueryFlightsDeployment queryflightD, ViewProfileDeployment viewprofileD, UpdateProfileDeployment updateprofileD, AuthDeployment authD, ValidateIdDeployment validateIdD) implements WrapperInterface {
+
+    Unit deploy() {
+        if(cancD != null) cancD!deploy();
+        else if(getRewardD != null) getRewardD!deploy();
+        else if(bookflightD != null) bookflightD!deploy();
+        else if(updatemilesD != null) updatemilesD!deploy();
+        else if(queryflightD != null) queryflightD!deploy();
+        else if(viewprofileD != null) viewprofileD!deploy();
+        else if(updateprofileD != null) updateprofileD!deploy();
+        else if(authD != null) authD!deploy();
+        else if(validateIdD != null) validateIdD!deploy();
+    }
+
+    Unit undeploy() {
+        if(cancD != null) cancD!undeploy();
+        else if(getRewardD != null) getRewardD!undeploy();
+        else if(bookflightD != null) bookflightD!undeploy();
+        else if(updatemilesD != null) updatemilesD!undeploy();
+        else if(queryflightD != null) queryflightD!undeploy();
+        else if(viewprofileD != null) viewprofileD!undeploy();
+        else if(updateprofileD != null) updateprofileD!undeploy();
+        else if(authD != null) authD!undeploy();
+        else if(validateIdD != null) validateIdD!undeploy();
+    }
+}

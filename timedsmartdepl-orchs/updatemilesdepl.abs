@@ -1,0 +1,252 @@
+module UpdateMilesDeployment;
+export *;
+import * from ABS.DC;
+import * from Architecture;
+
+interface UpdateMilesDeployment{
+	List<CancelBookingLoadBalancerInterface> getCancelBookingLoadBalancerInterface();
+	List<UpdateProfileInterface> getUpdateProfileInterface();
+	List<ViewProfileLoadBalancerInterface> getViewProfileLoadBalancerInterface();
+	List<CancelBookingInterface> getCancelBookingInterface();
+	List<ValidateIdInterface> getValidateIdInterface();
+	List<ViewProfileInterface> getViewProfileInterface();
+	List<QueryFlightsLoadBalancerInterface> getQueryFlightsLoadBalancerInterface();
+	List<UpdateProfileLoadBalancerInterface> getUpdateProfileLoadBalancerInterface();
+	List<UpdateMilesLoadBalancerInterface> getUpdateMilesLoadBalancerInterface();
+	List<AuthInterface> getAuthInterface();
+	List<GetRewardMilesLoadBalancerInterface> getGetRewardMilesLoadBalancerInterface();
+	List<UpdateMilesInterface> getUpdateMilesInterface();
+	List<BookFlightsLoadBalancerInterface> getBookFlightsLoadBalancerInterface();
+	List<AuthLoadBalancerInterface> getAuthLoadBalancerInterface();
+	List<GetRewardMilesInterface> getGetRewardMilesInterface();
+	List<ValidateIdLoadBalancerInterface> getValidateIdLoadBalancerInterface();
+	List<BookFlightsInterface> getBookFlightsInterface();
+	List<QueryFlightsInterface> getQueryFlightsInterface();
+	List<DeploymentComponent> getDeploymentComponent();
+	Unit deploy();
+	Unit undeploy();
+}
+
+class UpdateMilesDeployment(CloudProvider cloudProvider, PrometheusInterface prometheus, UpdateMilesLoadBalancerInterface balancer) implements UpdateMilesDeployment{
+
+	List<List<CancelBookingLoadBalancerInterface>> ls_ls_CancelBookingLoadBalancerInterface = Nil;
+	List<CancelBookingLoadBalancerInterface> ls_CancelBookingLoadBalancerInterface = Nil;
+	List<List<UpdateProfileInterface>> ls_ls_UpdateProfileInterface = Nil;
+	List<UpdateProfileInterface> ls_UpdateProfileInterface = Nil;
+	List<List<ViewProfileLoadBalancerInterface>> ls_ls_ViewProfileLoadBalancerInterface = Nil;
+	List<ViewProfileLoadBalancerInterface> ls_ViewProfileLoadBalancerInterface = Nil;
+	List<List<CancelBookingInterface>> ls_ls_CancelBookingInterface = Nil;
+	List<CancelBookingInterface> ls_CancelBookingInterface = Nil;
+	List<List<ValidateIdInterface>> ls_ls_ValidateIdInterface = Nil;
+	List<ValidateIdInterface> ls_ValidateIdInterface = Nil;
+	List<List<ViewProfileInterface>> ls_ls_ViewProfileInterface = Nil;
+	List<ViewProfileInterface> ls_ViewProfileInterface = Nil;
+	List<List<QueryFlightsLoadBalancerInterface>> ls_ls_QueryFlightsLoadBalancerInterface = Nil;
+	List<QueryFlightsLoadBalancerInterface> ls_QueryFlightsLoadBalancerInterface = Nil;
+	List<List<UpdateProfileLoadBalancerInterface>> ls_ls_UpdateProfileLoadBalancerInterface = Nil;
+	List<UpdateProfileLoadBalancerInterface> ls_UpdateProfileLoadBalancerInterface = Nil;
+	List<List<UpdateMilesLoadBalancerInterface>> ls_ls_UpdateMilesLoadBalancerInterface = Nil;
+	List<UpdateMilesLoadBalancerInterface> ls_UpdateMilesLoadBalancerInterface = Nil;
+	List<List<AuthInterface>> ls_ls_AuthInterface = Nil;
+	List<AuthInterface> ls_AuthInterface = Nil;
+	List<List<GetRewardMilesLoadBalancerInterface>> ls_ls_GetRewardMilesLoadBalancerInterface = Nil;
+	List<GetRewardMilesLoadBalancerInterface> ls_GetRewardMilesLoadBalancerInterface = Nil;
+	List<List<UpdateMilesInterface>> ls_ls_UpdateMilesInterface = Nil;
+	List<UpdateMilesInterface> ls_UpdateMilesInterface = Nil;
+	List<List<BookFlightsLoadBalancerInterface>> ls_ls_BookFlightsLoadBalancerInterface = Nil;
+	List<BookFlightsLoadBalancerInterface> ls_BookFlightsLoadBalancerInterface = Nil;
+	List<List<AuthLoadBalancerInterface>> ls_ls_AuthLoadBalancerInterface = Nil;
+	List<AuthLoadBalancerInterface> ls_AuthLoadBalancerInterface = Nil;
+	List<List<GetRewardMilesInterface>> ls_ls_GetRewardMilesInterface = Nil;
+	List<GetRewardMilesInterface> ls_GetRewardMilesInterface = Nil;
+	List<List<ValidateIdLoadBalancerInterface>> ls_ls_ValidateIdLoadBalancerInterface = Nil;
+	List<ValidateIdLoadBalancerInterface> ls_ValidateIdLoadBalancerInterface = Nil;
+	List<List<BookFlightsInterface>> ls_ls_BookFlightsInterface = Nil;
+	List<BookFlightsInterface> ls_BookFlightsInterface = Nil;
+	List<List<QueryFlightsInterface>> ls_ls_QueryFlightsInterface = Nil;
+	List<QueryFlightsInterface> ls_QueryFlightsInterface = Nil;
+	List<List<DeploymentComponent>> ls_ls_DeploymentComponent = Nil;
+	List<DeploymentComponent> ls_DeploymentComponent = Nil;
+	Rat waiting_time = 10;
+	{
+		cloudProvider.addInstanceDescription(Pair("c4_large",
+			map[Pair(CostPerInterval,100)
+			,Pair(PaymentInterval,1)
+			,Pair(Cores,2000)
+			,Pair(Memory,375)
+			,Pair(Bandwidth,500)
+			,Pair(Speed,10000)
+			]));
+		cloudProvider.addInstanceDescription(Pair("c4_xlarge",
+			map[Pair(CostPerInterval,199)
+			,Pair(PaymentInterval,1)
+			,Pair(Cores,4000)
+			,Pair(Memory,750)
+			,Pair(Bandwidth,750)
+			,Pair(Speed,20000)
+			]));
+		cloudProvider.addInstanceDescription(Pair("c4_2xlarge",
+			map[Pair(CostPerInterval,398)
+			,Pair(PaymentInterval,1)
+			,Pair(Cores,8000)
+			,Pair(Memory,1500)
+			,Pair(Bandwidth,1000)
+			,Pair(Speed,40000)
+			]));
+		cloudProvider.addInstanceDescription(Pair("c4_4xlarge",
+			map[Pair(CostPerInterval,796)
+			,Pair(PaymentInterval,1)
+			,Pair(Cores,16000)
+			,Pair(Memory,3000)
+			,Pair(Bandwidth,2000)
+			,Pair(Speed,80000)
+			]));
+	}
+
+	List<CancelBookingLoadBalancerInterface> getCancelBookingLoadBalancerInterface() { return ls_CancelBookingLoadBalancerInterface; }
+	List<UpdateProfileInterface> getUpdateProfileInterface() { return ls_UpdateProfileInterface; }
+	List<ViewProfileLoadBalancerInterface> getViewProfileLoadBalancerInterface() { return ls_ViewProfileLoadBalancerInterface; }
+	List<CancelBookingInterface> getCancelBookingInterface() { return ls_CancelBookingInterface; }
+	List<ValidateIdInterface> getValidateIdInterface() { return ls_ValidateIdInterface; }
+	List<ViewProfileInterface> getViewProfileInterface() { return ls_ViewProfileInterface; }
+	List<QueryFlightsLoadBalancerInterface> getQueryFlightsLoadBalancerInterface() { return ls_QueryFlightsLoadBalancerInterface; }
+	List<UpdateProfileLoadBalancerInterface> getUpdateProfileLoadBalancerInterface() { return ls_UpdateProfileLoadBalancerInterface; }
+	List<UpdateMilesLoadBalancerInterface> getUpdateMilesLoadBalancerInterface() { return ls_UpdateMilesLoadBalancerInterface; }
+	List<AuthInterface> getAuthInterface() { return ls_AuthInterface; }
+	List<GetRewardMilesLoadBalancerInterface> getGetRewardMilesLoadBalancerInterface() { return ls_GetRewardMilesLoadBalancerInterface; }
+	List<UpdateMilesInterface> getUpdateMilesInterface() { return ls_UpdateMilesInterface; }
+	List<BookFlightsLoadBalancerInterface> getBookFlightsLoadBalancerInterface() { return ls_BookFlightsLoadBalancerInterface; }
+	List<AuthLoadBalancerInterface> getAuthLoadBalancerInterface() { return ls_AuthLoadBalancerInterface; }
+	List<GetRewardMilesInterface> getGetRewardMilesInterface() { return ls_GetRewardMilesInterface; }
+	List<ValidateIdLoadBalancerInterface> getValidateIdLoadBalancerInterface() { return ls_ValidateIdLoadBalancerInterface; }
+	List<BookFlightsInterface> getBookFlightsInterface() { return ls_BookFlightsInterface; }
+	List<QueryFlightsInterface> getQueryFlightsInterface() { return ls_QueryFlightsInterface; }
+	List<DeploymentComponent> getDeploymentComponent() { return ls_DeploymentComponent; }
+
+	Unit deploy() {
+		ls_ls_CancelBookingLoadBalancerInterface = Cons(ls_CancelBookingLoadBalancerInterface,ls_ls_CancelBookingLoadBalancerInterface);
+		ls_CancelBookingLoadBalancerInterface = Nil;
+		ls_ls_UpdateProfileInterface = Cons(ls_UpdateProfileInterface,ls_ls_UpdateProfileInterface);
+		ls_UpdateProfileInterface = Nil;
+		ls_ls_ViewProfileLoadBalancerInterface = Cons(ls_ViewProfileLoadBalancerInterface,ls_ls_ViewProfileLoadBalancerInterface);
+		ls_ViewProfileLoadBalancerInterface = Nil;
+		ls_ls_CancelBookingInterface = Cons(ls_CancelBookingInterface,ls_ls_CancelBookingInterface);
+		ls_CancelBookingInterface = Nil;
+		ls_ls_ValidateIdInterface = Cons(ls_ValidateIdInterface,ls_ls_ValidateIdInterface);
+		ls_ValidateIdInterface = Nil;
+		ls_ls_ViewProfileInterface = Cons(ls_ViewProfileInterface,ls_ls_ViewProfileInterface);
+		ls_ViewProfileInterface = Nil;
+		ls_ls_QueryFlightsLoadBalancerInterface = Cons(ls_QueryFlightsLoadBalancerInterface,ls_ls_QueryFlightsLoadBalancerInterface);
+		ls_QueryFlightsLoadBalancerInterface = Nil;
+		ls_ls_UpdateProfileLoadBalancerInterface = Cons(ls_UpdateProfileLoadBalancerInterface,ls_ls_UpdateProfileLoadBalancerInterface);
+		ls_UpdateProfileLoadBalancerInterface = Nil;
+		ls_ls_UpdateMilesLoadBalancerInterface = Cons(ls_UpdateMilesLoadBalancerInterface,ls_ls_UpdateMilesLoadBalancerInterface);
+		ls_UpdateMilesLoadBalancerInterface = Nil;
+		ls_ls_AuthInterface = Cons(ls_AuthInterface,ls_ls_AuthInterface);
+		ls_AuthInterface = Nil;
+		ls_ls_GetRewardMilesLoadBalancerInterface = Cons(ls_GetRewardMilesLoadBalancerInterface,ls_ls_GetRewardMilesLoadBalancerInterface);
+		ls_GetRewardMilesLoadBalancerInterface = Nil;
+		ls_ls_UpdateMilesInterface = Cons(ls_UpdateMilesInterface,ls_ls_UpdateMilesInterface);
+		ls_UpdateMilesInterface = Nil;
+		ls_ls_BookFlightsLoadBalancerInterface = Cons(ls_BookFlightsLoadBalancerInterface,ls_ls_BookFlightsLoadBalancerInterface);
+		ls_BookFlightsLoadBalancerInterface = Nil;
+		ls_ls_AuthLoadBalancerInterface = Cons(ls_AuthLoadBalancerInterface,ls_ls_AuthLoadBalancerInterface);
+		ls_AuthLoadBalancerInterface = Nil;
+		ls_ls_GetRewardMilesInterface = Cons(ls_GetRewardMilesInterface,ls_ls_GetRewardMilesInterface);
+		ls_GetRewardMilesInterface = Nil;
+		ls_ls_ValidateIdLoadBalancerInterface = Cons(ls_ValidateIdLoadBalancerInterface,ls_ls_ValidateIdLoadBalancerInterface);
+		ls_ValidateIdLoadBalancerInterface = Nil;
+		ls_ls_BookFlightsInterface = Cons(ls_BookFlightsInterface,ls_ls_BookFlightsInterface);
+		ls_BookFlightsInterface = Nil;
+		ls_ls_QueryFlightsInterface = Cons(ls_QueryFlightsInterface,ls_ls_QueryFlightsInterface);
+		ls_QueryFlightsInterface = Nil;
+		ls_ls_DeploymentComponent = Cons(ls_DeploymentComponent,ls_ls_DeploymentComponent);
+		ls_DeploymentComponent = Nil;
+		this.deploy_aux();
+	}
+
+	Unit undeploy() {
+		if (ls_ls_DeploymentComponent != Nil) {
+			this.undeploy_aux();
+			ls_DeploymentComponent = head(ls_ls_DeploymentComponent);
+			ls_ls_DeploymentComponent = tail(ls_ls_DeploymentComponent);
+				ls_CancelBookingLoadBalancerInterface = head(ls_ls_CancelBookingLoadBalancerInterface);
+				ls_UpdateProfileInterface = head(ls_ls_UpdateProfileInterface);
+				ls_ViewProfileLoadBalancerInterface = head(ls_ls_ViewProfileLoadBalancerInterface);
+				ls_CancelBookingInterface = head(ls_ls_CancelBookingInterface);
+				ls_ValidateIdInterface = head(ls_ls_ValidateIdInterface);
+				ls_ViewProfileInterface = head(ls_ls_ViewProfileInterface);
+				ls_QueryFlightsLoadBalancerInterface = head(ls_ls_QueryFlightsLoadBalancerInterface);
+				ls_UpdateProfileLoadBalancerInterface = head(ls_ls_UpdateProfileLoadBalancerInterface);
+				ls_UpdateMilesLoadBalancerInterface = head(ls_ls_UpdateMilesLoadBalancerInterface);
+				ls_AuthInterface = head(ls_ls_AuthInterface);
+				ls_GetRewardMilesLoadBalancerInterface = head(ls_ls_GetRewardMilesLoadBalancerInterface);
+				ls_UpdateMilesInterface = head(ls_ls_UpdateMilesInterface);
+				ls_BookFlightsLoadBalancerInterface = head(ls_ls_BookFlightsLoadBalancerInterface);
+				ls_AuthLoadBalancerInterface = head(ls_ls_AuthLoadBalancerInterface);
+				ls_GetRewardMilesInterface = head(ls_ls_GetRewardMilesInterface);
+				ls_ValidateIdLoadBalancerInterface = head(ls_ls_ValidateIdLoadBalancerInterface);
+				ls_BookFlightsInterface = head(ls_ls_BookFlightsInterface);
+				ls_QueryFlightsInterface = head(ls_ls_QueryFlightsInterface);
+			ls_ls_CancelBookingLoadBalancerInterface = tail(ls_ls_CancelBookingLoadBalancerInterface);
+			ls_ls_UpdateProfileInterface = tail(ls_ls_UpdateProfileInterface);
+			ls_ls_ViewProfileLoadBalancerInterface = tail(ls_ls_ViewProfileLoadBalancerInterface);
+			ls_ls_CancelBookingInterface = tail(ls_ls_CancelBookingInterface);
+			ls_ls_ValidateIdInterface = tail(ls_ls_ValidateIdInterface);
+			ls_ls_ViewProfileInterface = tail(ls_ls_ViewProfileInterface);
+			ls_ls_QueryFlightsLoadBalancerInterface = tail(ls_ls_QueryFlightsLoadBalancerInterface);
+			ls_ls_UpdateProfileLoadBalancerInterface = tail(ls_ls_UpdateProfileLoadBalancerInterface);
+			ls_ls_UpdateMilesLoadBalancerInterface = tail(ls_ls_UpdateMilesLoadBalancerInterface);
+			ls_ls_AuthInterface = tail(ls_ls_AuthInterface);
+			ls_ls_GetRewardMilesLoadBalancerInterface = tail(ls_ls_GetRewardMilesLoadBalancerInterface);
+			ls_ls_UpdateMilesInterface = tail(ls_ls_UpdateMilesInterface);
+			ls_ls_BookFlightsLoadBalancerInterface = tail(ls_ls_BookFlightsLoadBalancerInterface);
+			ls_ls_AuthLoadBalancerInterface = tail(ls_ls_AuthLoadBalancerInterface);
+			ls_ls_GetRewardMilesInterface = tail(ls_ls_GetRewardMilesInterface);
+			ls_ls_ValidateIdLoadBalancerInterface = tail(ls_ls_ValidateIdLoadBalancerInterface);
+			ls_ls_BookFlightsInterface = tail(ls_ls_BookFlightsInterface);
+			ls_ls_QueryFlightsInterface = tail(ls_ls_QueryFlightsInterface);
+		}
+	}
+
+
+	Unit deploy_aux() {
+		Map<DeploymentComponent,Rat> speedPatchMap = map[];
+		DeploymentComponent c4_2xlarge_0 = cloudProvider.launchInstanceNamed("c4_2xlarge");
+		ls_DeploymentComponent = Cons(c4_2xlarge_0,ls_DeploymentComponent);
+		speedPatchMap = put(speedPatchMap,c4_2xlarge_0,0);
+		//await duration(waiting_time,waiting_time);
+		[DC: c4_2xlarge_0] UpdateMilesInterface odefault___UpdateMiles_0_c4_2xlarge_0 = new UpdateMiles(prometheus);
+		Rat coreRequired_odefault___UpdateMiles_0_c4_2xlarge_0 = 5096;
+		speedPatchMap = put(speedPatchMap, c4_2xlarge_0, fromJust(lookup(speedPatchMap,c4_2xlarge_0)) + coreRequired_odefault___UpdateMiles_0_c4_2xlarge_0);
+		ls_UpdateMilesInterface = Cons(odefault___UpdateMiles_0_c4_2xlarge_0, ls_UpdateMilesInterface);
+		this!patchSpeed(speedPatchMap);
+		balancer.connectInstance(odefault___UpdateMiles_0_c4_2xlarge_0);
+	}
+
+	Unit undeploy_aux() {
+		UpdateMilesInterface odefault___UpdateMiles_0_c4_2xlarge_0 = nth(ls_UpdateMilesInterface,0);
+		balancer.disconnectInstance();
+		while ( !isEmpty(ls_DeploymentComponent) ) {
+			cloudProvider.shutdownInstance(head(ls_DeploymentComponent));
+			ls_DeploymentComponent = tail(ls_DeploymentComponent);
+		}
+	}
+
+	Unit patchSpeed(Map<DeploymentComponent,Rat> dcs) {
+		foreach(entry in entries(dcs)) {
+			DeploymentComponent dc = fst(entry);
+			Rat coreUsed = snd(entry);
+			InfRat speed_aux = await dc!total(Speed);
+			Rat total_speed = case speed_aux {
+				Fin(x) => x;
+				_ => -1;
+			};
+			if(total_speed != -1) {
+				Rat totalCore = await dc!getNumberOfCores();
+				Rat speedPerCore = total_speed / totalCore;
+				dc!decrementResources(total_speed - (speedPerCore * coreUsed), Speed);
+			}
+		}
+	}
+}

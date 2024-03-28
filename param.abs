@@ -1,0 +1,70 @@
+module Param;
+
+export *;
+
+////SIMULATION CONFIG/////
+def Rat time_unit_to_sec() = 1; //1 sec = 1 time unit
+def Rat monitoring_window() = 5 * time_unit_to_sec(); 
+def Rat user_generation_window() = 5 * time_unit_to_sec();
+def Int buffer_size() = 10; //queue size
+def Rat speed_per_core() = 5;
+def Rat simulation_duration() = time_unit_to_sec() * 2000;
+def Int scale() = 200;
+////SIMULATION CONFIG/////
+
+//////METRICS/////
+def List<String> metrics() = list["latency", "total request", "request loss", "waiting", "completed", "instances"];
+def List<String> services() = list["CancelBooking", "GetRewardMiles", "UpdateMiles", "BookFlights", "QueryFlights", "ViewProfile", "UpdateProfile", "Auth", "ValidateId"];
+def String metric_for_scaling() = "MCL"; //"MCL" for scaling based on the service MCL 
+def Map<String,Rat> latency_threshold() = map[
+                                        Pair("CancelBooking", cancel_booking_service_time()), 
+                                        Pair("UpdateMiles", update_miles_service_time()), 
+                                        Pair("BookFlights", book_service_time()),
+                                        Pair("QueryFlights", query_service_time()), 
+                                        Pair("ViewProfile", view_service_time()), 
+                                        Pair("UpdateProfile", update_profile_service_time()),
+                                        Pair("Auth", auth_service_time()), 
+                                        Pair("ValidateId", validate_id_service_time()), 
+                                        Pair("GetRewardMiles", get_reward_miles_service_time())];
+
+//////METRICS/////
+
+/////////////MCLS///////////////
+def Rat cancel_booking_service_time() = (1/1000 * 726/10);// - get_reward_miles_service_time() - update_miles_service_time(); //ms
+def Rat cancel_booking_MCL() = 1/cancel_booking_service_time();
+
+def Rat get_reward_miles_service_time() = 1/1000 * 318/10; //ms
+def Rat get_reward_miles_MCL() = 1/get_reward_miles_service_time();
+
+def Rat update_miles_service_time() = 1/1000 * 275/10; //ms
+def Rat update_miles_MCL() = 1/update_miles_service_time();
+
+def Rat book_service_time() = (1/1000 * 568/10);// - get_reward_miles_service_time() - update_miles_service_time(); //ms
+def Rat book_MCL() = 1/book_service_time();
+
+def Rat query_service_time() = 1/1000 * 1015/10; //ms
+def Rat query_MCL() = 1/query_service_time();
+
+def Rat view_service_time() = 1/1000 * 928/10; //ms
+def Rat view_MCL() = 1/view_service_time();
+
+def Rat update_profile_service_time() = 1/1000 * 1246/10; //ms
+def Rat update_profile_MCL() = 1/update_profile_service_time();
+
+def Rat auth_service_time() = (1/1000 * 1037/10);// - validate_id_service_time(); //ms
+def Rat auth_MCL() = 1/auth_service_time();
+
+def Rat validate_id_service_time() = 1/1000 * 523/10; //ms
+def Rat validate_id_MCL() = 1/validate_id_service_time();
+
+def Map<String,Rat> serviceMCLs() = map[Pair("CancelBooking", cancel_booking_MCL()), Pair("UpdateMiles", update_miles_MCL()), Pair("BookFlights", book_MCL()),
+                                        Pair("QueryFlights", query_MCL()), Pair("ViewProfile", view_MCL()), Pair("UpdateProfile", update_profile_MCL()),
+                                        Pair("Auth",auth_MCL()), Pair("ValidateId",validate_id_MCL()), Pair("GetRewardMiles", get_reward_miles_MCL())];
+
+
+//////UTILITIES/////
+def Rat factorial(Rat x) = when x == 0 then 1 else x * factorial(x - 1);
+def Int sin_shape_accuracy() = 10; //the highest the value the more precise;
+def Rat pi() = 22/7; //approximation of pi
+def Int round(Rat x) = when x - truncate(x) > 1/2 then truncate(x) + 1 else truncate(x);
+

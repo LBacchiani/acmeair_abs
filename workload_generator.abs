@@ -1,0 +1,78 @@
+module WorkloadGenerator;
+
+export *;
+import * from Param;
+import * from User;
+import * from Architecture;
+
+
+
+interface WorkloadGeneratorInterface {}
+
+class WorkloadGenerator(Rat period, Rat mod, Rat shift, PrometheusInterface prometheus, AuthLoadBalancerInterface auth, ViewProfileLoadBalancerInterface viewProfile, QueryFlightsLoadBalancerInterface query, UpdateProfileLoadBalancerInterface updateProfile, BookFlightsLoadBalancerInterface book, CancelBookingLoadBalancerInterface cancel) implements WorkloadGeneratorInterface {
+
+    Rat time = 0;
+    List<UserInterface> users = list[];
+    Int userID = 0;
+
+    Unit run() {
+        while(time <= simulation_duration()) {
+            Rat res_throughput = await prometheus!getV("completed global", "");
+            Rat req_throughput = await prometheus!getV("request global", "");
+            Rat inst = this.depl_instances();
+            println("[Time: " + toString(time) + " Request: " + toString(float(req_throughput/user_generation_window())) + " Response: " + toString(float(res_throughput/user_generation_window())) + " User: " + toString(length(users)) + " Instances: " + toString(inst) + "]");
+            await duration(user_generation_window(), user_generation_window());
+            // println("\n");
+            // await duration(user_generation_window() + 1/100000000000, user_generation_window() +  1/100000000000);
+            time = time + (user_generation_window()/time_unit_to_sec());
+            Rat sin_shape = this.sin_taylor(time%period, sin_shape_accuracy());
+            sin_shape = sin_shape * mod + shift;
+            Int u = round(sin_shape);
+            if(u > length(users)) this!addUsers(u - length(users));
+            else if(u < length(users)) this!removeUser(length(users) - u);
+        }
+        this!removeUser(length(users));
+    }
+
+
+    Rat depl_instances() {
+        Rat instances = 0;
+        foreach(s in services()) {
+            Rat i = await prometheus!getV("instances", s);
+            instances = instances + i;
+        }
+        return instances;
+    }
+
+    Unit addUsers(Int n) {
+        while(n > 0) {
+            UserInterface u = new User("User" + toString(userID), prometheus, auth, viewProfile, query, updateProfile, book, cancel);
+            users = appendright(users, u);
+            n = n - 1;
+            userID = userID + 1;
+        }
+    }
+
+   Unit removeUser(Int n) {
+        while(n > 0) {
+            UserInterface u = head(users);
+            u!stop();
+            users = tail(users);
+            n = n - 1;
+        }
+    }
+
+    Rat sin_taylor(Rat x, Rat terms) {
+        x = pi() * x / 100; //to radians
+        Rat result = 0;
+        Int power = 1;
+        Int sign = 1;
+        while(terms > 0) {
+            result = result + (sign * pow(x,power) / factorial(power));
+            power = power + 2;
+            sign = sign * -1;
+            terms = terms - 1;
+        }
+        return result;
+    }
+}

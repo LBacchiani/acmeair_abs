@@ -1,0 +1,81 @@
+module User;
+
+export *;
+
+import * from Architecture;
+import * from Param;
+
+
+interface UserInterface {
+    Unit stop();
+    String getId();
+}
+
+class User(String userID, PrometheusInterface prometheus, AuthLoadBalancerInterface auth, ViewProfileLoadBalancerInterface viewProfile, QueryFlightsLoadBalancerInterface query, UpdateProfileLoadBalancerInterface updateProfile, BookFlightsLoadBalancerInterface book, CancelBookingLoadBalancerInterface cancel) implements UserInterface {
+
+    Int id = 0;
+    Bool stop = False;
+
+
+    Unit stop() {stop = True;}
+
+     String getId() {return userID;}
+
+    Unit run() {
+        while(!stop) {
+            Rat think = random(4);//this.think_time();
+            await duration(think,think);
+            await this!logic();
+        }
+    }
+
+    Unit logic() {
+            prometheus!push("request global", "", 1);
+            Bool completed = False;
+            Maybe<Fut<Result>> req = await auth!request(userID);
+            completed = await this!wait_for(req);
+            //profile 
+            req = await viewProfile!request();
+            completed = await this!wait_for(req);
+            req = await updateProfile!request();
+            completed = await this!wait_for(req);
+            req = await viewProfile!request();
+            completed = await this!wait_for(req);
+            /////
+
+            //query
+            req = await query!request();
+            completed = await this!wait_for(req);
+            ////
+
+            //book
+            req = await book!request();
+            completed = await this!wait_for(req);
+            
+            //cancel
+            req = await cancel!request();
+            completed = await this!wait_for(req);
+            req = await cancel!request();
+            completed = await this!wait_for(req);
+            
+            if(completed) prometheus!push("completed global", "", 1);
+    }
+
+    Bool wait_for(Maybe<Fut<Result>> req) {
+        Result res = Failure;
+        switch(req) {
+            Just(fut) => {
+                await fut?;
+                res = fut.get;
+            }
+            _ => skip;
+        }
+        return req != Nothing && res != Failure;
+    }
+
+    Rat think_time() {
+       Rat uniform_random_number = random(1000000000)/1000000000;
+       Rat random_exponential = -scale() * rat(log(float(uniform_random_number)));
+       return random_exponential/1000;
+    }
+}

@@ -1,0 +1,103 @@
+module Main;
+
+export *;
+import * from Monitor;
+import * from Architecture;
+import * from ABS.DC;
+import * from Setup;
+import * from CancelBookingDeployment;
+import * from GetRewardMilesDeployment;
+import * from BookFlightsDeployment;
+import * from UpdateMilesDeployment;
+import * from QueryFlightsDeployment;
+import * from ViewProfileDeployment;
+import * from UpdateProfileDeployment;
+import * from AuthDeployment;
+import * from ValidateIdDeployment;
+import * from ScaleWrapper;
+import * from User;
+import * from Param;
+import * from WorkloadGenerator;
+
+
+{
+
+    CloudProvider cp = new CloudProvider("CloudProvider");
+    PrometheusInterface prometheus = new Prometheus();
+
+    foreach(m in metrics()) {
+        foreach(s in services()) await prometheus!init(m, s);
+    }
+
+    ////SETUP///
+    Setup setup = new Setup(cp, prometheus);
+    await setup!deploy();
+    List<UpdateMilesLoadBalancerInterface> updateMilesLBList = await setup!getUpdateMilesLoadBalancerInterface();
+    UpdateMilesLoadBalancerInterface updateMilesLB = head(updateMilesLBList);
+
+    List<ViewProfileLoadBalancerInterface> viewProfileLBList = await setup!getViewProfileLoadBalancerInterface();
+    ViewProfileLoadBalancerInterface viewProfileLB = head(viewProfileLBList);
+
+    List<AuthLoadBalancerInterface> authLBList = await setup!getAuthLoadBalancerInterface();
+    AuthLoadBalancerInterface authLB = head(authLBList);
+
+    List<ValidateIdLoadBalancerInterface> validateIdLBList = await setup!getValidateIdLoadBalancerInterface();
+    ValidateIdLoadBalancerInterface validateIdLB = head(validateIdLBList);
+
+    List<GetRewardMilesLoadBalancerInterface> getRewardMilesLBList = await setup!getGetRewardMilesLoadBalancerInterface();
+    GetRewardMilesLoadBalancerInterface getRewardMilesLB = head(getRewardMilesLBList);
+
+    List<QueryFlightsLoadBalancerInterface> queryFlightsLBList = await setup!getQueryFlightsLoadBalancerInterface();
+    QueryFlightsLoadBalancerInterface queryFlightsLB = head(queryFlightsLBList);
+
+    List<BookFlightsLoadBalancerInterface> bookFlightsLBList = await setup!getBookFlightsLoadBalancerInterface();
+    BookFlightsLoadBalancerInterface bookFlightsLB = head(bookFlightsLBList);
+
+    List<CancelBookingLoadBalancerInterface> cancelBookingLBList = await setup!getCancelBookingLoadBalancerInterface();
+    CancelBookingLoadBalancerInterface cancelBookingLB = head(cancelBookingLBList);
+
+    List<UpdateProfileLoadBalancerInterface> updateProfileLBList = await setup!getUpdateProfileLoadBalancerInterface();
+    UpdateProfileLoadBalancerInterface updateProfileLB = head(updateProfileLBList);
+
+    ////WRAPPERS///
+    CancelBookingDeployment cancD = new CancelBookingDeployment(cp, prometheus, cancelBookingLB, getRewardMilesLB, updateMilesLB);
+    WrapperInterface cancelWrapper = new Wrapper(cancD, null, null, null, null, null, null, null, null);
+
+    GetRewardMilesDeployment rewD = new GetRewardMilesDeployment(cp, prometheus, getRewardMilesLB);
+    WrapperInterface getRewardWrapper = new Wrapper(null, rewD, null, null, null, null, null, null, null);
+
+    BookFlightsDeployment bookflightD = new BookFlightsDeployment(cp, prometheus, bookFlightsLB, getRewardMilesLB, updateMilesLB);
+    WrapperInterface bookflightsWrapper = new Wrapper(null, null, bookflightD, null, null, null, null, null, null);
+
+    UpdateMilesDeployment updateMilesD = new UpdateMilesDeployment(cp, prometheus, updateMilesLB);
+    WrapperInterface updateMilesWrapper = new Wrapper(null, null, null, updateMilesD, null, null, null, null, null);
+
+    QueryFlightsDeployment queryD = new QueryFlightsDeployment(cp, prometheus, queryFlightsLB);
+    WrapperInterface queryWrapper = new Wrapper(null, null, null, null, queryD, null, null, null, null);
+
+    ViewProfileDeployment viewProfileD = new ViewProfileDeployment(cp, prometheus, viewProfileLB);
+    WrapperInterface viewProfileWrapper = new Wrapper(null, null, null, null, null, viewProfileD, null, null, null);
+
+    UpdateProfileDeployment updateProfileD = new UpdateProfileDeployment(cp, prometheus, updateProfileLB);
+    WrapperInterface updateProfileWrapper = new Wrapper(null, null, null, null, null, null, updateProfileD, null, null);
+    
+    AuthDeployment authD = new AuthDeployment(cp, prometheus, authLB, validateIdLB);
+    WrapperInterface authWrapper = new Wrapper(null, null, null, null, null, null, null, authD, null);
+
+    ValidateIdDeployment validateId = new ValidateIdDeployment(cp, prometheus, validateIdLB);
+    WrapperInterface validateIdWrapper = new Wrapper(null, null, null, null, null, null, null, null, validateId);
+
+    ////MONITORS///
+    MonitorInterface m1 = new Monitor(prometheus, "CancelBooking", cancelWrapper, 1);
+    MonitorInterface m2 = new Monitor(prometheus, "GetRewardMiles", getRewardWrapper, 1);
+    MonitorInterface m3 = new Monitor(prometheus, "UpdateMiles", updateMilesWrapper, 1);
+    MonitorInterface m4 = new Monitor(prometheus, "BookFlights", bookflightsWrapper, 1);
+    MonitorInterface m5 = new Monitor(prometheus, "QueryFlights", queryWrapper, 1);
+    MonitorInterface m6 = new Monitor(prometheus, "ViewProfile", viewProfileWrapper, 1);
+    MonitorInterface m7 = new Monitor(prometheus, "UpdateProfile", updateProfileWrapper, 1);
+    MonitorInterface m8 = new Monitor(prometheus, "Auth", authWrapper, 1);
+    MonitorInterface m9 = new Monitor(prometheus, "ValidateId", validateIdWrapper, 1);
+
+    new WorkloadGenerator(200, 25, 35, prometheus, authLB, viewProfileLB, queryFlightsLB, updateProfileLB, bookFlightsLB, cancelBookingLB);
+
+}
