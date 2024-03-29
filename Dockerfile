@@ -14,13 +14,13 @@ RUN git clone https://github.com/abstools/abstools.git && \
     cd ..
 
 # Clone global-scaling repository
-RUN git clone https://github.com/LBacchiani/abs_sock_shop.git && \
-    cd abs_sock_shop && \
+RUN git clone https://github.com/LBacchiani/acmeair_abs && \
+    cd acmeair_abs && \
     echo '#!/bin/bash\n../../../abstools/frontend/bin/bash/absc --erlang *.abs timesmartdel-orchs/*.abs' > ./compile.sh && \
     chmod +x ./compile.sh && 
 
 # Set working directory
-WORKDIR /abs_sock_shop
+WORKDIR /acmeair_abs
 
 # Start a long-running process to keep the container alive
 CMD ["tail", "-f", "/dev/null"]

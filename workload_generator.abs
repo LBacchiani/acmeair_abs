@@ -63,7 +63,7 @@ class WorkloadGenerator(Rat period, Rat mod, Rat shift, PrometheusInterface prom
     }
 
     Rat sin_taylor(Rat x, Rat terms) {
-        x = pi() * x / 100; //to radians
+        x = pi() * x / 100;
         Rat result = 0;
         Int power = 1;
         Int sign = 1;
