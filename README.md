@@ -1,1 +1,1 @@
-# abs_sock_shop
+# ABS model for AcmeAir microservice architecture
