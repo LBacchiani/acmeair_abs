@@ -16,8 +16,8 @@ RUN git clone https://github.com/abstools/abstools.git && \
 # Clone global-scaling repository
 RUN git clone https://github.com/LBacchiani/acmeair_abs && \
     cd acmeair_abs && \
-    echo '#!/bin/bash\n../../../abstools/frontend/bin/bash/absc --erlang *.abs timesmartdel-orchs/*.abs' > ./compile.sh && \
-    chmod +x ./compile.sh && 
+    echo '#!/bin/bash\n../abstools/frontend/bin/bash/absc --erlang *.abs timedsmartdepl-orchs/*.abs' > ./compile.sh && \
+    chmod +x ./compile.sh 
 
 # Set working directory
 WORKDIR /acmeair_abs
