@@ -19,8 +19,8 @@ class WorkloadGenerator(Rat period, Rat mod, Rat shift, PrometheusInterface prom
         while(time <= simulation_duration()) {
             Rat res_throughput = await prometheus!getV("completed global", "");
             Rat req_throughput = await prometheus!getV("request global", "");
-            Rat inst = this.depl_instances();
-            println("[Time: " + toString(time) + " Request: " + toString(float(req_throughput/user_generation_window())) + " Response: " + toString(float(res_throughput/user_generation_window())) + " User: " + toString(length(users)) + " Instances: " + toString(inst) + "]");
+            Rat allocates_cores = this.allocated_cores();
+            println("[Time: " + toString(time) + " Request: " + toString(float(req_throughput/user_generation_window())) + " Response: " + toString(float(res_throughput/user_generation_window())) + " User: " + toString(length(users)) + " Cores: " + toString(float(allocates_cores)) + "]");
             await duration(user_generation_window(), user_generation_window());
             // println("\n");
             // await duration(user_generation_window() + 1/100000000000, user_generation_window() +  1/100000000000);
@@ -35,13 +35,14 @@ class WorkloadGenerator(Rat period, Rat mod, Rat shift, PrometheusInterface prom
     }
 
 
-    Rat depl_instances() {
-        Rat instances = 0;
+    Rat allocated_cores() {
+        Rat cores = 0;
         foreach(s in services()) {
+            Rat c = lookupUnsafe(cores(), s);
             Rat i = await prometheus!getV("instances", s);
-            instances = instances + i;
+            cores = cores + (i * c);
         }
-        return instances;
+        return cores;
     }
 
     Unit addUsers(Int n) {

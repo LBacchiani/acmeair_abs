@@ -61,6 +61,11 @@ def Map<String,Rat> serviceMCLs() = map[Pair("CancelBooking", cancel_booking_MCL
                                         Pair("QueryFlights", query_MCL()), Pair("ViewProfile", view_MCL()), Pair("UpdateProfile", update_profile_MCL()),
                                         Pair("Auth",auth_MCL()), Pair("ValidateId",validate_id_MCL()), Pair("GetRewardMiles", get_reward_miles_MCL())];
 
+def Map<String,Rat> cores() = map[Pair("CancelBooking", 2032/1000), Pair("UpdateMiles", 5096/1000), Pair("BookFlights", 3155/1000),
+                                        Pair("QueryFlights", 6498/1000), Pair("ViewProfile", 3582/1000), Pair("UpdateProfile", 2734/1000),
+                                        Pair("Auth", 365/100), Pair("ValidateId", 1877/1000), Pair("GetRewardMiles", 4380/1000)];
+
+
 
 //////UTILITIES/////
 def Rat factorial(Rat x) = when x == 0 then 1 else x * factorial(x - 1);
