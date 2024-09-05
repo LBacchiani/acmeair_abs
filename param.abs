@@ -6,16 +6,17 @@ export *;
 def Rat time_unit_to_sec() = 1; //1 sec = 1 time unit
 def Rat monitoring_window() = 5 * time_unit_to_sec(); 
 def Rat user_generation_window() = 5 * time_unit_to_sec();
-def Int buffer_size() = 10; //queue size
+def Int buffer_size() = 15; //queue size
 def Rat speed_per_core() = 5;
 def Rat simulation_duration() = time_unit_to_sec() * 2000;
 def Int scale() = 200;
+def Int k() = 2;
+def Int k_big() = 5;
 ////SIMULATION CONFIG/////
 
 //////METRICS/////
 def List<String> metrics() = list["latency", "total request", "request loss", "waiting", "completed", "instances"];
 def List<String> services() = list["CancelBooking", "GetRewardMiles", "UpdateMiles", "BookFlights", "QueryFlights", "ViewProfile", "UpdateProfile", "Auth", "ValidateId"];
-def String metric_for_scaling() = "MCL"; //"MCL" for scaling based on the service MCL 
 def Map<String,Rat> latency_threshold() = map[
                                         Pair("CancelBooking", cancel_booking_service_time()), 
                                         Pair("UpdateMiles", update_miles_service_time()), 

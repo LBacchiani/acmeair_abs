@@ -13,7 +13,7 @@ class Monitor(PrometheusInterface prometheus, String serviceName, WrapperInterfa
 
     Unit run() {
         while(time <= simulation_duration()) {
-            await duration(monitoring_window(), monitoring_window());
+            await duration(monitoring_window());
             Rat latency = await prometheus!getV("latency", serviceName);
             Rat total_req = await prometheus!getV("total request", serviceName);
             Rat loss = await prometheus!getV("request loss", serviceName);
@@ -21,23 +21,17 @@ class Monitor(PrometheusInterface prometheus, String serviceName, WrapperInterfa
             Rat instances = await prometheus!getV("instances", serviceName);
             Rat waiting = await prometheus!getV("waiting", serviceName);
             Rat avg_lat = 0;
-            Rat throughput = time_unit_to_sec() * total_req / monitoring_window();
-            Rat add_throughput = time_unit_to_sec() * (total_req - completed) / monitoring_window();
-            Rat compl_throughput = time_unit_to_sec() * completed / monitoring_window();
+            Rat inbound_workload = time_unit_to_sec() * total_req / monitoring_window();
+            Rat mcl = lookupUnsafe(serviceMCLs(), serviceName);
+            Rat supp = mcl * instances;
             if(completed != 0) avg_lat = latency/completed;
-            if(metric_for_scaling() == "latency") {
-                if(avg_lat > time_unit_to_sec() * lookupUnsafe(latency_threshold(), serviceName)) wrapper!deploy();
-                else if(avg_lat < time_unit_to_sec() * lookupUnsafe(latency_threshold(), serviceName)) wrapper!undeploy();
+            if ((inbound_workload + k_big()) - supp > k() || supp - (inbound_workload + k_big()) > k()) {
+                inbound_workload = inbound_workload + k_big();
+                Int target = ceil(float(inbound_workload/mcl));
+                if(target > instances) this!scaleUp(target - instances);
+                else if(target < instances) this!scaleDown(instances - target); 
             }
-            else if(metric_for_scaling() == "MCL") {
-               Rat mcl = lookupUnsafe(serviceMCLs(), serviceName);
-               if(add_throughput > 0) throughput = throughput + add_throughput;
-               Int target = ceil(float(throughput/mcl));
-            //    if(target > 10) target = 10;
-               if(target > instances) this!scaleUp(target - instances);
-               else if(target < instances) this!scaleDown(instances - target);
-            }    
-            // println(serviceName + "[Time: " + toString(time) + " Latency: " + toString(float(avg_lat)) + "s Instances: " + toString(instances) + " Request Throughput: " + toString(float(throughput)) +  " Waiting: " + toString(float(add_throughput)) + " Response Throughput: " + toString(float(compl_throughput)) + "]");
+            // println(serviceName + "[Time: " + toString(time) + " Latency: " + toString(float(avg_lat)) + "s Instances: " + toString(instances) +"]");// + " Request Throughput: " + toString(float(inbound_workload)) +  " Waiting: " + toString(float(waiting)) + " Completed: " + toString(float(completed)) + " Loss: " + toString(float(loss)) + "]");
             time = time + (monitoring_window()/time_unit_to_sec());      
         }
     }

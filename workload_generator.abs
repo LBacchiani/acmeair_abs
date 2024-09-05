@@ -21,9 +21,7 @@ class WorkloadGenerator(Rat period, Rat mod, Rat shift, PrometheusInterface prom
             Rat req_throughput = await prometheus!getV("request global", "");
             Rat allocates_cores = this.allocated_cores();
             println("[Time: " + toString(time) + " Request: " + toString(float(req_throughput/user_generation_window())) + " Response: " + toString(float(res_throughput/user_generation_window())) + " User: " + toString(length(users)) + " Cores: " + toString(float(allocates_cores)) + "]");
-            await duration(user_generation_window(), user_generation_window());
-            // println("\n");
-            // await duration(user_generation_window() + 1/100000000000, user_generation_window() +  1/100000000000);
+            await duration(user_generation_window());
             time = time + (user_generation_window()/time_unit_to_sec());
             Rat sin_shape = this.sin_taylor(time%period, sin_shape_accuracy());
             sin_shape = sin_shape * mod + shift;
