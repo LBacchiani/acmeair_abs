@@ -1,4 +1,4 @@
-module Architecture;
+module Architecture2;
 
 export *;
 import * from Param;
@@ -13,9 +13,12 @@ data Result = Success | Failure;
 // [SmartDeploy : "{\"id\" : \"Setup\", \"specification\" : \"CancelBookingLoadBalancer = 1 and GetRewardMilesLoadBalancer = 1 and BookFlightsLoadBalancer = 1 and UpdateMilesLoadBalancer = 1 and QueryFlightsLoadBalancer = 1 and ViewProfileLoadBalancer = 1 and UpdateProfileLoadBalancer = 1 and AuthLoadBalancer = 1 and ValidateIdLoadBalancer = 1 and CancelBooking = 1 and GetRewardMiles = 1 and BookFlights = 1 and UpdateMiles = 1 and QueryFlights = 1 and ViewProfile = 1 and Auth = 1 and ValidateId = 1 and UpdateProfile = 1 and forall ?x in DC: (?x.CancelBookingLoadBalancer + ?x.GetRewardMilesLoadBalancer + ?x.BookFlightsLoadBalancer + ?x.UpdateMilesLoadBalancer + ?x.QueryFlightsLoadBalancer + ?x.ViewProfileLoadBalancer + ?x.UpdateProfileLoadBalancer + ?x.AuthLoadBalancer + ?x.ValidateIdLoadBalancer > 0 impl (sum ?y in obj: ?x.?y) = 1)\", \"DC\":[ ], \"obj\":[{\"name\":\"prometheus\",\"interface\":\"PrometheusInterface\",\"provides\":[{\"ports\":[\"PrometheusInterface\"],\"num\":-1}],\"methods\" : []} ], \"cloud_provider_DC_availability\":{ \"c4_large\":40, \"c4_xlarge\":40, \"c4_2xlarge\":40, \"c4_4xlarge\": 40}, \"bind preferences\":[ \"local\",  \"sum ?x of type CancelBooking in '.*' : forall ?y of type CancelBookingLoadBalancer in '.*' : ?x used by ?y\",\"sum ?x of type GetRewardMiles in '.*' : forall ?y of type GetRewardMilesLoadBalancer in '.*' : ?x used by ?y\", \"sum ?x of type BookFlights in '.*' : forall ?y of type BookFlightsLoadBalancer in '.*' : ?x used by ?y\", \"sum ?x of type UpdateMiles in '.*' : forall ?y of type UpdateMilesLoadBalancer in '.*' : ?x used by ?y\", \"sum ?x of type UpdateProfile in '.*' : forall ?y of type UpdateProfileLoadBalancer in '.*' : ?x used by ?y\", \"sum ?x of type QueryFlights in '.*' : forall ?y of type QueryFlightsLoadBalancer in '.*' : ?x used by ?y\", \"sum ?x of type ViewProfile in '.*' : forall ?y of type ViewProfileLoadBalancer in '.*' : ?x used by ?y\", \"sum ?x of type Auth in '.*' : forall ?y of type AuthLoadBalancer in '.*' : ?x used by ?y\", \"sum ?x of type ValidateId in '.*' : forall ?y of type ValidateIdLoadBalancer in '.*' : ?x used by ?y\"], \"add_method_priorities\":[], \"remove_method_priorities\":[] }" ]
 ///////SETUP///////
 
-[SmartDeploy : "{\"id\" : \"Setup\", \"specification\" : \"CancelBooking = 1 and GetRewardMiles = 1 and BookFlights = 1 and UpdateMiles = 1 and QueryFlights = 1 and ViewProfile = 1 and Auth = 1 and UpdateProfile = 1 and ValidateId = 1 and forall ?x in DC: (?x.CancelBookingLoadBalancer + ?x.GetRewardMilesLoadBalancer + ?x.BookFlightsLoadBalancer + ?x.UpdateMilesLoadBalancer + ?x.QueryFlightsLoadBalancer + ?x.ViewProfileLoadBalancer + ?x.UpdateProfileLoadBalancer + ?x.AuthLoadBalancer + ?x.ValidateIdLoadBalancer > 0 impl (sum ?y in obj: ?x.?y) = 1)\", \"DC\":[ ], \"obj\":[{\"name\":\"prometheus\",\"interface\":\"PrometheusInterface\",\"provides\":[{\"ports\":[\"PrometheusInterface\"],\"num\":-1}],\"methods\" : []} ], \"cloud_provider_DC_availability\":{ \"c4_large\":40, \"c4_xlarge\":40, \"c4_2xlarge\":40, \"c4_4xlarge\": 40}, \"bind preferences\":[ \"local\",  \"sum ?x of type CancelBooking in '.*' : forall ?y of type CancelBookingLoadBalancer in '.*' : ?x used by ?y\",\"sum ?x of type GetRewardMiles in '.*' : forall ?y of type GetRewardMilesLoadBalancer in '.*' : ?x used by ?y\", \"sum ?x of type BookFlights in '.*' : forall ?y of type BookFlightsLoadBalancer in '.*' : ?x used by ?y\", \"sum ?x of type UpdateMiles in '.*' : forall ?y of type UpdateMilesLoadBalancer in '.*' : ?x used by ?y\", \"sum ?x of type UpdateProfile in '.*' : forall ?y of type UpdateProfileLoadBalancer in '.*' : ?x used by ?y\", \"sum ?x of type QueryFlights in '.*' : forall ?y of type QueryFlightsLoadBalancer in '.*' : ?x used by ?y\", \"sum ?x of type ViewProfile in '.*' : forall ?y of type ViewProfileLoadBalancer in '.*' : ?x used by ?y\", \"sum ?x of type Auth in '.*' : forall ?y of type AuthLoadBalancer in '.*' : ?x used by ?y\", \"sum ?x of type ValidateId in '.*' : forall ?y of type ValidateIdLoadBalancer in '.*' : ?x used by ?y\"], \"add_method_priorities\":[], \"remove_method_priorities\":[] }" ]
 
+/////SETUP WITHOUT STRONG DEP//////
 
+[SmartDeploy : "{\"id\" : \"Setup\", \"specification\" : \"BookFlightsLoadBalancer = 1\", \"DC\":[ ], \"obj\":[{\"name\":\"prometheus\",\"interface\":\"PrometheusInterface\",\"provides\":[{\"ports\":[\"PrometheusInterface\"],\"num\":-1}],\"methods\" : []} ], \"cloud_provider_DC_availability\":{ \"c4_large\":40, \"c4_xlarge\":40, \"c4_2xlarge\":40, \"c4_4xlarge\": 40}, \"bind preferences\":[\"local\"], \"add_method_priorities\":[], \"remove_method_priorities\":[] }" ]
+
+////////////////////////// 
 
 ///////DEPLOYMENTS///////
 // [SmartDeploy : "{\"id\" : \"CancelBookingDeployment\", \"specification\" : \"CancelBooking = 1\", \"DC\":[ ], \"obj\":[{\"name\":\"prometheus\",\"interface\":\"PrometheusInterface\",\"provides\":[{\"ports\":[\"PrometheusInterface\"],\"num\":-1}],\"methods\" : []}, {\"name\":\"balancer\",\"interface\":\"CancelBookingLoadBalancerInterface\",\"provides\":[{\"ports\":[\"CancelBookingLoadBalancerInterface\"],\"num\":-1}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"CancelBookingInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"CancelBookingInterface\"}}]}, {\"name\":\"getReward\",\"interface\":\"GetRewardMilesLoadBalancerInterface\",\"provides\":[{\"ports\":[\"GetRewardMilesLoadBalancerInterface\"],\"num\":-1}],\"methods\" : []}, {\"name\":\"updateMiles\",\"interface\":\"UpdateMilesLoadBalancerInterface\",\"provides\":[{\"ports\":[\"UpdateMilesLoadBalancerInterface\"],\"num\":-1}],\"methods\" : []} ], \"cloud_provider_DC_availability\":{ \"c4_large\":40, \"c4_xlarge\":40, \"c4_2xlarge\":40, \"c4_4xlarge\": 40}, \"bind preferences\":[ \"local\", \"sum ?x of type CancelBooking in '.*' : forall ?y of type balancer in '.*' : ?x used by ?y\"], \"add_method_priorities\":[], \"remove_method_priorities\":[] }" ]
@@ -41,11 +44,15 @@ interface CancelBookingLoadBalancerInterface {
     Unit removeMessage();
 }
 
-[SmartDeployCost : "{\"class\" : \"CancelBookingLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 100,\"Memory\" : 100},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"CancelBookingInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"CancelBookingInterface\"}}]}]}"]
-class CancelBookingLoadBalancer(PrometheusInterface prometheus) implements CancelBookingLoadBalancerInterface {
-    List<CancelBookingInterface> instancesConnected = list[];
+[SmartDeployCost : "{\"class\" : \"CancelBookingLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 0,\"Memory\" : 0},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"CancelBookingInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"CancelBookingInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"CancelBookingInterface\"}}]}]}"]
+class CancelBookingLoadBalancer(PrometheusInterface prometheus, CancelBookingInterface instance) implements CancelBookingLoadBalancerInterface {
+    List<CancelBookingInterface> instancesConnected = list[instance];
     Int pending = 0;
     Int nextInstance = -1;
+
+    {
+        prometheus!push("instances", "CancelBooking", 1);
+    }
 
     Unit connectInstance(CancelBookingInterface newInstance){
         instancesConnected = appendright(instancesConnected, newInstance);
@@ -67,7 +74,7 @@ class CancelBookingLoadBalancer(PrometheusInterface prometheus) implements Cance
             CancelBookingInterface selectedInstance = nth(instancesConnected, nextInstance);
             pending = pending + 1;
             Rat start = timeValue(now());
-            Fut<Result> req = selectedInstance!request(start);
+            Fut<Result> req = selectedInstance!request(this, start);
             res = Just(req);
         } else {prometheus!push("request loss", "CancelBooking", 1);}
         return res;
@@ -77,12 +84,12 @@ class CancelBookingLoadBalancer(PrometheusInterface prometheus) implements Cance
 }
 
 interface CancelBookingInterface {
-    Result request(Rat start);
+    Result request(CancelBookingLoadBalancerInterface balancer, Rat start);
 }
 
-[SmartDeployCost : "{\"class\" : \"CancelBooking\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 2032, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"GetRewardMilesLoadBalancerInterface\"}, {\"kind\" : \"require\",\"type\" : \"UpdateMilesLoadBalancerInterface\"}, {\"kind\" : \"require\",\"type\" : \"CancelBookingLoadBalancerInterface\"}],\"methods\" : []}]}"]
-class CancelBooking(PrometheusInterface prometheus, GetRewardMilesLoadBalancerInterface getRewardMiles, UpdateMilesLoadBalancerInterface updateMiles, CancelBookingLoadBalancerInterface balancer) implements CancelBookingInterface {
-    Result request(Rat start) {
+[SmartDeployCost : "{\"class\" : \"CancelBooking\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 2032, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"GetRewardMilesLoadBalancerInterface\"}, {\"kind\" : \"require\",\"type\" : \"UpdateMilesLoadBalancerInterface\"}],\"methods\" : []}]}"]
+class CancelBooking(PrometheusInterface prometheus, GetRewardMilesLoadBalancerInterface getRewardMiles, UpdateMilesLoadBalancerInterface updateMiles) implements CancelBookingInterface {
+    Result request(CancelBookingLoadBalancerInterface balancer, Rat start) {
         [Cost: speed_per_core() * time_unit_to_sec() * 2032 / cancel_booking_MCL()] skip;
         Rat stop = timeValue(now());
         prometheus!push("latency", "CancelBooking", stop - start);
@@ -127,11 +134,14 @@ interface GetRewardMilesLoadBalancerInterface {
     Unit removeMessage();
 }
 
-[SmartDeployCost : "{\"class\" : \"GetRewardMilesLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 100,\"Memory\" : 100},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"GetRewardMilesInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"GetRewardMilesInterface\"}}]}]}"]
-class GetRewardMilesLoadBalancer(PrometheusInterface prometheus) implements GetRewardMilesLoadBalancerInterface {
-    List<GetRewardMilesInterface> instancesConnected = list[];
+[SmartDeployCost : "{\"class\" : \"GetRewardMilesLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 0,\"Memory\" : 0},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"GetRewardMilesInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"GetRewardMilesInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"GetRewardMilesInterface\"}}]}]}"]
+class GetRewardMilesLoadBalancer(PrometheusInterface prometheus, GetRewardMilesInterface instance) implements GetRewardMilesLoadBalancerInterface {
+    List<GetRewardMilesInterface> instancesConnected = list[instance];
     Int pending = 0;
     Int nextInstance = -1;
+    {
+        prometheus!push("instances", "GetRewardMiles", 1);
+    }
 
     Unit connectInstance(GetRewardMilesInterface newInstance){
         instancesConnected = appendright(instancesConnected, newInstance);
@@ -153,7 +163,7 @@ class GetRewardMilesLoadBalancer(PrometheusInterface prometheus) implements GetR
             GetRewardMilesInterface selectedInstance = nth(instancesConnected, nextInstance);
             pending = pending + 1;
             Rat start = timeValue(now());
-            Fut<Result> req = selectedInstance!request(start);
+            Fut<Result> req = selectedInstance!request(this, start);
             res = Just(req);
         } else {prometheus!push("request loss", "GetRewardMiles", 1);}
         return res;
@@ -163,12 +173,12 @@ class GetRewardMilesLoadBalancer(PrometheusInterface prometheus) implements GetR
 }
 
 interface GetRewardMilesInterface {
-    Result request(Rat start);
+    Result request(GetRewardMilesLoadBalancerInterface balancer, Rat start);
 }
 
-[SmartDeployCost : "{\"class\" : \"GetRewardMiles\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 4380, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"},{\"kind\" : \"require\",\"type\" : \"GetRewardMilesLoadBalancerInterface\"}],\"methods\" : []}]}"]
-class GetRewardMiles(PrometheusInterface prometheus, GetRewardMilesLoadBalancerInterface balancer) implements GetRewardMilesInterface {
-    Result request(Rat start) {
+[SmartDeployCost : "{\"class\" : \"GetRewardMiles\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 4380, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : []}]}"]
+class GetRewardMiles(PrometheusInterface prometheus) implements GetRewardMilesInterface {
+    Result request(GetRewardMilesLoadBalancerInterface balancer, Rat start) {
         [Cost: speed_per_core() * time_unit_to_sec() * 4380 / get_reward_miles_MCL()] skip;
         Rat stop = timeValue(now());
         prometheus!push("latency", "GetRewardMiles", stop - start);
@@ -187,11 +197,14 @@ interface UpdateMilesLoadBalancerInterface {
     Unit removeMessage();
 }
 
-[SmartDeployCost : "{\"class\" : \"UpdateMilesLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 100,\"Memory\" : 100},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"UpdateMilesInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"UpdateMilesInterface\"}}]}]}"]
-class UpdateMilesLoadBalancer(PrometheusInterface prometheus) implements UpdateMilesLoadBalancerInterface {
-    List<UpdateMilesInterface> instancesConnected = list[];
+[SmartDeployCost : "{\"class\" : \"UpdateMilesLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 0,\"Memory\" : 0},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"UpdateMilesInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"UpdateMilesInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"UpdateMilesInterface\"}}]}]}"]
+class UpdateMilesLoadBalancer(PrometheusInterface prometheus, UpdateMilesInterface instance) implements UpdateMilesLoadBalancerInterface {
+    List<UpdateMilesInterface> instancesConnected = list[instance];
     Int pending = 0;
     Int nextInstance = -1;
+    {
+        prometheus!push("instances", "UpdateMiles", 1);
+    }
 
     Unit connectInstance(UpdateMilesInterface newInstance){
         instancesConnected = appendright(instancesConnected, newInstance);
@@ -213,7 +226,7 @@ class UpdateMilesLoadBalancer(PrometheusInterface prometheus) implements UpdateM
             UpdateMilesInterface selectedInstance = nth(instancesConnected, nextInstance);
             pending = pending + 1;
             Rat start = timeValue(now());
-            Fut<Result> req = selectedInstance!request(start);
+            Fut<Result> req = selectedInstance!request(this, start);
             res = Just(req);
         } else {prometheus!push("request loss", "UpdateMiles", 1);}
         return res;
@@ -223,12 +236,12 @@ class UpdateMilesLoadBalancer(PrometheusInterface prometheus) implements UpdateM
 }
 
 interface UpdateMilesInterface {
-    Result request(Rat start);
+    Result request(UpdateMilesLoadBalancerInterface balancer, Rat start);
 }
 
-[SmartDeployCost : "{\"class\" : \"UpdateMiles\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 5096, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"UpdateMilesLoadBalancerInterface\"}],\"methods\" : []}]}"]
-class UpdateMiles(PrometheusInterface prometheus, UpdateMilesLoadBalancerInterface balancer) implements UpdateMilesInterface {
-    Result request(Rat start) {
+[SmartDeployCost : "{\"class\" : \"UpdateMiles\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 5096, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : []}]}"]
+class UpdateMiles(PrometheusInterface prometheus) implements UpdateMilesInterface {
+    Result request(UpdateMilesLoadBalancerInterface balancer, Rat start) {
         [Cost: speed_per_core() * time_unit_to_sec() * 5096 / update_miles_MCL()] skip;
         Rat stop = timeValue(now());
         prometheus!push("latency", "UpdateMiles", stop - start);
@@ -247,11 +260,14 @@ interface BookFlightsLoadBalancerInterface {
     Unit removeMessage();
 }
 
-[SmartDeployCost : "{\"class\" : \"BookFlightsLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 100,\"Memory\" : 100},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"BookFlightsInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"BookFlightsInterface\"}}]}]}"]
-class BookFlightsLoadBalancer(PrometheusInterface prometheus) implements BookFlightsLoadBalancerInterface {
-    List<BookFlightsInterface> instancesConnected = list[];
+[SmartDeployCost : "{\"class\" : \"BookFlightsLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 0,\"Memory\" : 0},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"BookFlightsInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"BookFlightsInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"BookFlightsInterface\"}}]}]}"]
+class BookFlightsLoadBalancer(PrometheusInterface prometheus, BookFlightsInterface instance) implements BookFlightsLoadBalancerInterface {
+    List<BookFlightsInterface> instancesConnected = list[instance];
     Int pending = 0;
     Int nextInstance = -1;
+   {
+        prometheus!push("instances", "BookFlights", 1);
+   } 
 
     Unit connectInstance(BookFlightsInterface newInstance){
         instancesConnected = appendright(instancesConnected, newInstance);
@@ -273,7 +289,7 @@ class BookFlightsLoadBalancer(PrometheusInterface prometheus) implements BookFli
             BookFlightsInterface selectedInstance = nth(instancesConnected, nextInstance);
             pending = pending + 1;
             Rat start = timeValue(now());
-            Fut<Result> req = selectedInstance!request(start);
+            Fut<Result> req = selectedInstance!request(this, start);
             res = Just(req);
         } else {prometheus!push("request loss", "BookFlights", 1);}
         return res;
@@ -283,12 +299,12 @@ class BookFlightsLoadBalancer(PrometheusInterface prometheus) implements BookFli
 }
 
 interface BookFlightsInterface {
-    Result request(Rat start);
+    Result request(BookFlightsLoadBalancerInterface balancer, Rat start);
 }
 
-[SmartDeployCost : "{\"class\" : \"BookFlights\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 3155, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"GetRewardMilesLoadBalancerInterface\"}, {\"kind\" : \"require\",\"type\" : \"UpdateMilesLoadBalancerInterface\"}, {\"kind\" : \"require\",\"type\" : \"BookFlightsLoadBalancerInterface\"}],\"methods\" : []}]}"]
-class BookFlights(PrometheusInterface prometheus, GetRewardMilesLoadBalancerInterface getRewardMiles, UpdateMilesLoadBalancerInterface updateMiles, BookFlightsLoadBalancerInterface balancer) implements BookFlightsInterface {
-    Result request(Rat start) {
+[SmartDeployCost : "{\"class\" : \"BookFlights\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 3155, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"GetRewardMilesLoadBalancerInterface\"}],\"methods\" : []}]}"]
+class BookFlights(PrometheusInterface prometheus, GetRewardMilesLoadBalancerInterface getRewardMiles, UpdateMilesLoadBalancerInterface updateMiles) implements BookFlightsInterface {
+    Result request(BookFlightsLoadBalancerInterface balancer, Rat start) {
         [Cost: speed_per_core() * time_unit_to_sec() * 3155 / book_MCL()] skip;
         Rat stop = timeValue(now());
         prometheus!push("latency", "BookFlights", stop - start);
@@ -341,11 +357,14 @@ interface QueryFlightsLoadBalancerInterface {
     Unit removeMessage();
 }
 
-[SmartDeployCost : "{\"class\" : \"QueryFlightsLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 100,\"Memory\" : 100},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"QueryFlightsInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"QueryFlightsInterface\"}}]}]}"]
-class QueryFlightsLoadBalancer(PrometheusInterface prometheus) implements QueryFlightsLoadBalancerInterface {
-    List<QueryFlightsInterface> instancesConnected = list[];
+[SmartDeployCost : "{\"class\" : \"QueryFlightsLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 0,\"Memory\" : 0},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"QueryFlightsInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"QueryFlightsInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"QueryFlightsInterface\"}}]}]}"]
+class QueryFlightsLoadBalancer(PrometheusInterface prometheus, QueryFlightsInterface instance) implements QueryFlightsLoadBalancerInterface {
+    List<QueryFlightsInterface> instancesConnected = list[instance];
     Int pending = 0;
     Int nextInstance = -1;
+    {
+        prometheus!push("instances", "QueryFlights", 1);
+    }
 
     Unit connectInstance(QueryFlightsInterface newInstance){
         instancesConnected = appendright(instancesConnected, newInstance);
@@ -367,7 +386,7 @@ class QueryFlightsLoadBalancer(PrometheusInterface prometheus) implements QueryF
             QueryFlightsInterface selectedInstance = nth(instancesConnected, nextInstance);
             pending = pending + 1;
             Rat start = timeValue(now());
-            Fut<Result> req = selectedInstance!request(start);
+            Fut<Result> req = selectedInstance!request(this, start);
             res = Just(req);
         } else {prometheus!push("request loss", "QueryFlights", 1);}
         return res;
@@ -377,12 +396,12 @@ class QueryFlightsLoadBalancer(PrometheusInterface prometheus) implements QueryF
 }
 
 interface QueryFlightsInterface {
-    Result request(Rat start);
+    Result request(QueryFlightsLoadBalancerInterface balancer, Rat start);
 }
 
-[SmartDeployCost : "{\"class\" : \"QueryFlights\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 6498, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"QueryFlightsLoadBalancerInterface\"}],\"methods\" : []}]}"]
-class QueryFlights(PrometheusInterface prometheus, QueryFlightsLoadBalancerInterface balancer) implements QueryFlightsInterface {
-    Result request(Rat start) {
+[SmartDeployCost : "{\"class\" : \"QueryFlights\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 6498, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : []}]}"]
+class QueryFlights(PrometheusInterface prometheus) implements QueryFlightsInterface {
+    Result request(QueryFlightsLoadBalancerInterface balancer, Rat start) {
         [Cost: speed_per_core() * time_unit_to_sec() * 6498 / query_MCL()] skip;
         Rat stop = timeValue(now());
         prometheus!push("latency", "QueryFlights", stop - start);
@@ -402,11 +421,14 @@ interface ViewProfileLoadBalancerInterface {
     Unit removeMessage();
 }
 
-[SmartDeployCost : "{\"class\" : \"ViewProfileLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 100,\"Memory\" : 100},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"ViewProfileInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"ViewProfileInterface\"}}]}]}"]
-class ViewProfileLoadBalancer(PrometheusInterface prometheus) implements ViewProfileLoadBalancerInterface {
-    List<ViewProfileInterface> instancesConnected = list[];
+[SmartDeployCost : "{\"class\" : \"ViewProfileLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 0,\"Memory\" : 0},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"},{\"kind\" : \"require\",\"type\" : \"ViewProfileInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"ViewProfileInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"ViewProfileInterface\"}}]}]}"]
+class ViewProfileLoadBalancer(PrometheusInterface prometheus, ViewProfileInterface instance) implements ViewProfileLoadBalancerInterface {
+    List<ViewProfileInterface> instancesConnected = list[instance];
     Int pending = 0;
     Int nextInstance = -1;
+    {
+        prometheus!push("instances", "ViewProfile", 1);
+    }
 
     Unit connectInstance(ViewProfileInterface newInstance){
         instancesConnected = appendright(instancesConnected, newInstance);
@@ -428,7 +450,7 @@ class ViewProfileLoadBalancer(PrometheusInterface prometheus) implements ViewPro
             ViewProfileInterface selectedInstance = nth(instancesConnected, nextInstance);
             pending = pending + 1;
             Rat start = timeValue(now());
-            Fut<Result> req = selectedInstance!request(start);
+            Fut<Result> req = selectedInstance!request(this, start);
             res = Just(req);
         } else {prometheus!push("request loss", "ViewProfile", 1);}
         return res;
@@ -438,12 +460,12 @@ class ViewProfileLoadBalancer(PrometheusInterface prometheus) implements ViewPro
 }
 
 interface ViewProfileInterface {
-    Result request(Rat start);
+    Result request(ViewProfileLoadBalancerInterface balancer, Rat start);
 }
 
-[SmartDeployCost : "{\"class\" : \"ViewProfile\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 3582, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"ViewProfileLoadBalancerInterface\"}],\"methods\" : []}]}"]
-class ViewProfile(PrometheusInterface prometheus, ViewProfileLoadBalancerInterface balancer) implements ViewProfileInterface {
-    Result request(Rat start) {
+[SmartDeployCost : "{\"class\" : \"ViewProfile\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 3582, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : []}]}"]
+class ViewProfile(PrometheusInterface prometheus) implements ViewProfileInterface {
+    Result request(ViewProfileLoadBalancerInterface balancer, Rat start) {
         [Cost: speed_per_core() * time_unit_to_sec() * 3582 / view_MCL()] skip;
         Rat stop = timeValue(now());
         prometheus!push("latency", "ViewProfile", stop - start);
@@ -462,11 +484,14 @@ interface UpdateProfileLoadBalancerInterface {
     Unit removeMessage();
 }
 
-[SmartDeployCost : "{\"class\" : \"UpdateProfileLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 100,\"Memory\" : 100},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"UpdateProfileInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"UpdateProfileInterface\"}}]}]}"]
-class UpdateProfileLoadBalancer(PrometheusInterface prometheus) implements UpdateProfileLoadBalancerInterface {
-    List<UpdateProfileInterface> instancesConnected = list[];
+[SmartDeployCost : "{\"class\" : \"UpdateProfileLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 0,\"Memory\" : 0},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"},{\"kind\" : \"require\",\"type\" : \"UpdateProfileInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"UpdateProfileInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"UpdateProfileInterface\"}}]}]}"]
+class UpdateProfileLoadBalancer(PrometheusInterface prometheus, UpdateProfileInterface instance) implements UpdateProfileLoadBalancerInterface {
+    List<UpdateProfileInterface> instancesConnected = list[instance];
     Int pending = 0;
     Int nextInstance = -1;
+    {
+       prometheus!push("instances", "UpdateProfile", 1); 
+    }
 
     Unit connectInstance(UpdateProfileInterface newInstance){
         instancesConnected = appendright(instancesConnected, newInstance);
@@ -488,7 +513,7 @@ class UpdateProfileLoadBalancer(PrometheusInterface prometheus) implements Updat
             UpdateProfileInterface selectedInstance = nth(instancesConnected, nextInstance);
             pending = pending + 1;
             Rat start = timeValue(now());
-            Fut<Result> req = selectedInstance!request(start);
+            Fut<Result> req = selectedInstance!request(this, start);
             res = Just(req);
         } else {prometheus!push("request loss", "UpdateProfile", 1);}
         return res;
@@ -498,12 +523,12 @@ class UpdateProfileLoadBalancer(PrometheusInterface prometheus) implements Updat
 }
 
 interface UpdateProfileInterface {
-    Result request(Rat start);
+    Result request(UpdateProfileLoadBalancerInterface balancer, Rat start);
 }
 
-[SmartDeployCost : "{\"class\" : \"UpdateProfile\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 2734, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"UpdateProfileLoadBalancerInterface\"}],\"methods\" : []}]}"]
-class UpdateProfile(PrometheusInterface prometheus, UpdateProfileLoadBalancerInterface balancer) implements UpdateProfileInterface {
-    Result request(Rat start) {
+[SmartDeployCost : "{\"class\" : \"UpdateProfile\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 2734, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : []}]}"]
+class UpdateProfile(PrometheusInterface prometheus) implements UpdateProfileInterface {
+    Result request(UpdateProfileLoadBalancerInterface balancer, Rat start) {
         [Cost: speed_per_core() * time_unit_to_sec() * 2734 / update_profile_MCL()] skip;
         Rat stop = timeValue(now());
         prometheus!push("latency", "UpdateProfile", stop - start);
@@ -522,11 +547,14 @@ interface AuthLoadBalancerInterface {
     Unit removeMessage();
 }
 
-[SmartDeployCost : "{\"class\" : \"AuthLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 100,\"Memory\" : 100},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"AuthInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"AuthInterface\"}}]}]}"]
-class AuthLoadBalancer(PrometheusInterface prometheus) implements AuthLoadBalancerInterface {
-    List<AuthInterface> instancesConnected = list[];
+[SmartDeployCost : "{\"class\" : \"AuthLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 0,\"Memory\" : 0},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"AuthInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"AuthInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"AuthInterface\"}}]}]}"]
+class AuthLoadBalancer(PrometheusInterface prometheus, AuthInterface instance) implements AuthLoadBalancerInterface {
+    List<AuthInterface> instancesConnected = list[instance];
     Int pending = 0;
     Int nextInstance = -1;
+    {
+        prometheus!push("instances", "Auth", 1);
+    }
 
     Unit connectInstance(AuthInterface newInstance){
         instancesConnected = appendright(instancesConnected, newInstance);
@@ -549,7 +577,7 @@ class AuthLoadBalancer(PrometheusInterface prometheus) implements AuthLoadBalanc
             AuthInterface selectedInstance = nth(instancesConnected, nextInstance);
             pending = pending + 1;
             Rat start = timeValue(now());
-            Fut<Result> req = selectedInstance!request(start);
+            Fut<Result> req = selectedInstance!request(this, start);
             res = Just(req);
         } else {prometheus!push("request loss", "Auth", 1);}
         return res;
@@ -559,12 +587,12 @@ class AuthLoadBalancer(PrometheusInterface prometheus) implements AuthLoadBalanc
 }
 
 interface AuthInterface {
-    Result request(Rat start);
+    Result request(AuthLoadBalancerInterface balancer, Rat start);
 }
 
-[SmartDeployCost : "{\"class\" : \"Auth\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 3650, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"ValidateIdLoadBalancerInterface\"}, {\"kind\" : \"require\",\"type\" : \"AuthLoadBalancerInterface\"}],\"methods\" : []}]}"]
-class Auth(PrometheusInterface prometheus, ValidateIdLoadBalancerInterface validateId, AuthLoadBalancerInterface balancer) implements AuthInterface {
-    Result request(Rat start) {
+[SmartDeployCost : "{\"class\" : \"Auth\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 3650, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"ValidateIdLoadBalancerInterface\"}],\"methods\" : []}]}"]
+class Auth(PrometheusInterface prometheus, ValidateIdLoadBalancerInterface validateId) implements AuthInterface {
+    Result request(AuthLoadBalancerInterface balancer, Rat start) {
         [Cost: speed_per_core() * time_unit_to_sec() * 3650 / auth_MCL()] skip;
         Maybe<Fut<Result>> validation = await validateId!request();
         Rat stop = timeValue(now());
@@ -592,11 +620,14 @@ interface ValidateIdLoadBalancerInterface {
     Unit removeMessage();
 }
 
-[SmartDeployCost : "{\"class\" : \"ValidateIdLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 100,\"Memory\" : 100},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"ValidateIdInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"ValidateIdInterface\"}}]}]}"]
-class ValidateIdLoadBalancer(PrometheusInterface prometheus) implements ValidateIdLoadBalancerInterface {
-    List<ValidateIdInterface> instancesConnected = list[];
+[SmartDeployCost : "{\"class\" : \"ValidateIdLoadBalancer\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 0,\"Memory\" : 0},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"ValidateIdInterface\"}],\"methods\" : [{\"add\" : {\"name\" : \"connectInstance\",\"param_type\" : \"ValidateIdInterface\"},\"remove\" : {\"name\" : \"disconnectInstance\", \"return_type\": \"ValidateIdInterface\"}}]}]}"]
+class ValidateIdLoadBalancer(PrometheusInterface prometheus, ValidateIdInterface instance) implements ValidateIdLoadBalancerInterface {
+    List<ValidateIdInterface> instancesConnected = list[instance];
     Int pending = 0;
     Int nextInstance = -1;
+    {
+        prometheus!push("instances", "ValidateId", 1);
+    }
 
     Unit connectInstance(ValidateIdInterface newInstance){
         instancesConnected = appendright(instancesConnected, newInstance);
@@ -618,7 +649,7 @@ class ValidateIdLoadBalancer(PrometheusInterface prometheus) implements Validate
             ValidateIdInterface selectedInstance = nth(instancesConnected, nextInstance);
             pending = pending + 1;
             Rat start = timeValue(now());
-            Fut<Result> req = selectedInstance!request(start);
+            Fut<Result> req = selectedInstance!request(this, start);
             res = Just(req);
         } else {prometheus!push("request loss", "ValidateId", 1);}
         return res;
@@ -628,12 +659,12 @@ class ValidateIdLoadBalancer(PrometheusInterface prometheus) implements Validate
 }
 
 interface ValidateIdInterface {
-    Result request(Rat start);
+    Result request(ValidateIdLoadBalancerInterface balancer, Rat start);
 }
 
-[SmartDeployCost : "{\"class\" : \"ValidateId\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 1877, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"ValidateIdLoadBalancerInterface\"}],\"methods\" : []}]}"]
-class ValidateId(PrometheusInterface prometheus, ValidateIdLoadBalancerInterface balancer) implements ValidateIdInterface {
-    Result request(Rat start) {
+[SmartDeployCost : "{\"class\" : \"ValidateId\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 1877, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}],\"methods\" : []}]}"]
+class ValidateId(PrometheusInterface prometheus) implements ValidateIdInterface {
+    Result request(ValidateIdLoadBalancerInterface balancer, Rat start) {
         [Cost: speed_per_core() * time_unit_to_sec() * 1877 / validate_id_MCL()] skip;
         Rat stop = timeValue(now());
         prometheus!push("latency", "ValidateId", stop - start);

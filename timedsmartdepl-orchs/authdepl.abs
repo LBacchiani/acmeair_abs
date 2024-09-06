@@ -215,7 +215,7 @@ class AuthDeployment(CloudProvider cloudProvider, PrometheusInterface prometheus
 		DeploymentComponent c4_xlarge_0 = cloudProvider.launchInstanceNamed("c4_xlarge");
 		ls_DeploymentComponent = Cons(c4_xlarge_0,ls_DeploymentComponent);
 		speedPatchMap = put(speedPatchMap,c4_xlarge_0,0);
-		[DC: c4_xlarge_0] AuthInterface odefault___Auth_0_c4_xlarge_0 = new Auth(prometheus, validateId);
+		[DC: c4_xlarge_0] AuthInterface odefault___Auth_0_c4_xlarge_0 = new Auth(prometheus, validateId, balancer);
 		Rat coreRequired_odefault___Auth_0_c4_xlarge_0 = 3650;
 		speedPatchMap = put(speedPatchMap, c4_xlarge_0, fromJust(lookup(speedPatchMap,c4_xlarge_0)) + coreRequired_odefault___Auth_0_c4_xlarge_0);
 		ls_AuthInterface = Cons(odefault___Auth_0_c4_xlarge_0, ls_AuthInterface);

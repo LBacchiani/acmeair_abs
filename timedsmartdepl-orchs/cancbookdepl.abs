@@ -215,7 +215,7 @@ class CancelBookingDeployment(CloudProvider cloudProvider, PrometheusInterface p
 		DeploymentComponent c4_xlarge_0 = cloudProvider.launchInstanceNamed("c4_xlarge");
 		ls_DeploymentComponent = Cons(c4_xlarge_0,ls_DeploymentComponent);
 		speedPatchMap = put(speedPatchMap,c4_xlarge_0,0);
-		[DC: c4_xlarge_0] CancelBookingInterface odefault___CancelBooking_0_c4_xlarge_0 = new CancelBooking(prometheus, getReward, updateMiles);
+		[DC: c4_xlarge_0] CancelBookingInterface odefault___CancelBooking_0_c4_xlarge_0 = new CancelBooking(prometheus, getReward, updateMiles, balancer);
 		Rat coreRequired_odefault___CancelBooking_0_c4_xlarge_0 = 2032;
 		speedPatchMap = put(speedPatchMap, c4_xlarge_0, fromJust(lookup(speedPatchMap,c4_xlarge_0)) + coreRequired_odefault___CancelBooking_0_c4_xlarge_0);
 		ls_CancelBookingInterface = Cons(odefault___CancelBooking_0_c4_xlarge_0, ls_CancelBookingInterface);
