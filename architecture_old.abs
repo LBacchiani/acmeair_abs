@@ -16,8 +16,9 @@ data Result = Success | Failure;
 
 /////SETUP WITHOUT STRONG DEP//////
 
-[SmartDeploy : "{\"id\" : \"Setup\", \"specification\" : \"BookFlightsLoadBalancer = 1\", \"DC\":[ ], \"obj\":[{\"name\":\"prometheus\",\"interface\":\"PrometheusInterface\",\"provides\":[{\"ports\":[\"PrometheusInterface\"],\"num\":-1}],\"methods\" : []} ], \"cloud_provider_DC_availability\":{ \"c4_large\":40, \"c4_xlarge\":40, \"c4_2xlarge\":40, \"c4_4xlarge\": 40}, \"bind preferences\":[\"local\"], \"add_method_priorities\":[], \"remove_method_priorities\":[] }" ]
+[SmartDeploy : "{\"id\" : \"Setup\", \"specification\" : \"BookFlights = 1 and BookFlightsLoadBalancer = 1\", \"DC\":[ ], \"obj\":[{\"name\":\"prometheus\",\"interface\":\"PrometheusInterface\",\"provides\":[{\"ports\":[\"PrometheusInterface\"],\"num\":-1}],\"methods\" : []} ], \"cloud_provider_DC_availability\":{ \"c4_large\":40, \"c4_xlarge\":40, \"c4_2xlarge\":40, \"c4_4xlarge\": 40}, \"bind preferences\":[\"local\"], \"add_method_priorities\":[], \"remove_method_priorities\":[] }" ]
 
+// and forall ?x in DC: (?x.CancelBookingLoadBalancer + ?x.BookFlightsLoadBalancer  + ?x.QueryFlightsLoadBalancer + ?x.ViewProfileLoadBalancer + ?x.UpdateProfileLoadBalancer + ?x.AuthLoadBalancer + ?x.ValidateIdLoadBalancer + ?x.UpdateMilesLoadBalancer + ?x.GetRewardMilesLoadBalancer > 0 impl (sum ?y in obj: ?x.?y) = 1)
 ////////////////////////// 
 
 ///////DEPLOYMENTS///////
@@ -302,7 +303,7 @@ interface BookFlightsInterface {
     Result request(BookFlightsLoadBalancerInterface balancer, Rat start);
 }
 
-[SmartDeployCost : "{\"class\" : \"BookFlights\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 3155, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"GetRewardMilesLoadBalancerInterface\"}],\"methods\" : []}]}"]
+[SmartDeployCost : "{\"class\" : \"BookFlights\",\"scenarios\" : [{\"name\" : \"default\",\"provide\" : -1,\"cost\" : {\"Cores\" : 3155, \"Memory\" : 300},\"sig\" : [{\"kind\" : \"require\",\"type\" : \"PrometheusInterface\"}, {\"kind\" : \"require\",\"type\" : \"GetRewardMilesLoadBalancerInterface\"}, {\"kind\" : \"require\",\"type\" : \"UpdateMilesLoadBalancerInterface\"}],\"methods\" : []}]}"]
 class BookFlights(PrometheusInterface prometheus, GetRewardMilesLoadBalancerInterface getRewardMiles, UpdateMilesLoadBalancerInterface updateMiles) implements BookFlightsInterface {
     Result request(BookFlightsLoadBalancerInterface balancer, Rat start) {
         [Cost: speed_per_core() * time_unit_to_sec() * 3155 / book_MCL()] skip;
