@@ -216,7 +216,7 @@ class ViewProfileDeployment(CloudProvider cloudProvider, PrometheusInterface pro
 		ls_DeploymentComponent = Cons(c4_xlarge_0,ls_DeploymentComponent);
 		speedPatchMap = put(speedPatchMap,c4_xlarge_0,0);
 		//await duration(waiting_time,waiting_time);
-		[DC: c4_xlarge_0] ViewProfileInterface odefault___ViewProfile_0_c4_xlarge_0 = new ViewProfile(prometheus, balancer);
+		[DC: c4_xlarge_0] ViewProfileInterface odefault___ViewProfile_0_c4_xlarge_0 = new ViewProfile(prometheus);
 		Rat coreRequired_odefault___ViewProfile_0_c4_xlarge_0 = 3582;
 		speedPatchMap = put(speedPatchMap, c4_xlarge_0, fromJust(lookup(speedPatchMap,c4_xlarge_0)) + coreRequired_odefault___ViewProfile_0_c4_xlarge_0);
 		ls_ViewProfileInterface = Cons(odefault___ViewProfile_0_c4_xlarge_0, ls_ViewProfileInterface);

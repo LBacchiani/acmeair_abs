@@ -215,7 +215,7 @@ class BookFlightsDeployment(CloudProvider cloudProvider, PrometheusInterface pro
 		DeploymentComponent c4_xlarge_0 = cloudProvider.launchInstanceNamed("c4_xlarge");
 		ls_DeploymentComponent = Cons(c4_xlarge_0,ls_DeploymentComponent);
 		speedPatchMap = put(speedPatchMap,c4_xlarge_0,0);
-		[DC: c4_xlarge_0] BookFlightsInterface odefault___BookFlights_0_c4_xlarge_0 = new BookFlights(prometheus, getReward, updateMiles, balancer);
+		[DC: c4_xlarge_0] BookFlightsInterface odefault___BookFlights_0_c4_xlarge_0 = new BookFlights(prometheus, getReward, updateMiles);
 		Rat coreRequired_odefault___BookFlights_0_c4_xlarge_0 = 3155;
 		speedPatchMap = put(speedPatchMap, c4_xlarge_0, fromJust(lookup(speedPatchMap,c4_xlarge_0)) + coreRequired_odefault___BookFlights_0_c4_xlarge_0);
 		ls_BookFlightsInterface = Cons(odefault___BookFlights_0_c4_xlarge_0, ls_BookFlightsInterface);

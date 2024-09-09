@@ -216,7 +216,7 @@ class GetRewardMilesDeployment(CloudProvider cloudProvider, PrometheusInterface 
 		ls_DeploymentComponent = Cons(c4_2xlarge_0,ls_DeploymentComponent);
 		speedPatchMap = put(speedPatchMap,c4_2xlarge_0,0);
 		//await duration(waiting_time,waiting_time);
-		[DC: c4_2xlarge_0] GetRewardMilesInterface odefault___GetRewardMiles_0_c4_2xlarge_0 = new GetRewardMiles(prometheus, balancer);
+		[DC: c4_2xlarge_0] GetRewardMilesInterface odefault___GetRewardMiles_0_c4_2xlarge_0 = new GetRewardMiles(prometheus);
 		Rat coreRequired_odefault___GetRewardMiles_0_c4_2xlarge_0 = 4380;
 		speedPatchMap = put(speedPatchMap, c4_2xlarge_0, fromJust(lookup(speedPatchMap,c4_2xlarge_0)) + coreRequired_odefault___GetRewardMiles_0_c4_2xlarge_0);
 		ls_GetRewardMilesInterface = Cons(odefault___GetRewardMiles_0_c4_2xlarge_0, ls_GetRewardMilesInterface);
