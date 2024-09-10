@@ -18,6 +18,7 @@ data Result = Success | Failure;
 
 [SmartDeploy : "{\"id\" : \"Setup\", \"specification\" : \"BookFlightsLoadBalancer = 1 and QueryFlightsLoadBalancer = 1 and CancelBookingLoadBalancer = 1 and UpdateProfileLoadBalancer = 1 and AuthLoadBalancer = 1 and ViewProfileLoadBalancer = 1 and forall ?x in DC: (?x.CancelBookingLoadBalancer + ?x.BookFlightsLoadBalancer  + ?x.QueryFlightsLoadBalancer + ?x.ViewProfileLoadBalancer + ?x.UpdateProfileLoadBalancer + ?x.AuthLoadBalancer + ?x.ValidateIdLoadBalancer + ?x.UpdateMilesLoadBalancer + ?x.GetRewardMilesLoadBalancer > 0 impl (sum ?y in obj: ?x.?y) = 1)\", \"DC\":[ ], \"obj\":[{\"name\":\"prometheus\",\"interface\":\"PrometheusInterface\",\"provides\":[{\"ports\":[\"PrometheusInterface\"],\"num\":-1}],\"methods\" : []} ], \"cloud_provider_DC_availability\":{ \"c4_large\":40, \"c4_xlarge\":40, \"c4_2xlarge\":40, \"c4_4xlarge\": 40}, \"bind preferences\":[ \"local\"], \"add_method_priorities\":[], \"remove_method_priorities\":[] }" ]
 
+
 // and forall ?x in DC: (?x.CancelBookingLoadBalancer + ?x.BookFlightsLoadBalancer  + ?x.QueryFlightsLoadBalancer + ?x.ViewProfileLoadBalancer + ?x.UpdateProfileLoadBalancer + ?x.AuthLoadBalancer + ?x.ValidateIdLoadBalancer + ?x.UpdateMilesLoadBalancer + ?x.GetRewardMilesLoadBalancer > 0 impl (sum ?y in obj: ?x.?y) = 1)
 ////////////////////////// 
 
